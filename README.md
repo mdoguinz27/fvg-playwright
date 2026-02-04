@@ -1,86 +1,113 @@
-# Playwright E2E Testing
+# 🎭 Fravega E2E Test Suite
 
-Este proyecto utiliza [Playwright](https://playwright.dev/) para realizar pruebas de extremo a extremo en una aplicación web. Se incluyen dos tests principales para automatizar el flujo de compra de productos con diferentes criterios de selección y validación.
+<p align="left">
+  <img src="https://img.shields.io/badge/Playwright-282C34?style=for-the-badge&logo=playwright&logoColor=45ba4b" alt="Playwright" />
+  <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="Node.js" />
+  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript" />
+  <img src="https://img.shields.io/badge/Pattern-POM-blue?style=for-the-badge" alt="POM Pattern" />
+</p>
 
-## Requisitos
+Este repositorio alberga una robusta suite de pruebas automatizadas **End-to-End (E2E)** para el sitio web de [Fravega](https://www.fravega.com/). Diseñada con un enfoque en la mantenibilidad y la eficiencia, la suite utiliza **Playwright** bajo el patrón de **Page Object Model (POM)**.
 
-- Node.js (>=14.x)
-- Playwright
+---
 
-## Instalación
+## 📑 Tabla de Contenidos
 
-1. Clona el repositorio y navega al directorio del proyecto.
-2. Instala las dependencias con:
+- [🚀 Inicio Rápido](#-inicio-rápido)
+- [🧪 Escenarios de Prueba](#-escenarios-de-prueba)
+- [🛠️ Ejecución de Tests](#️-ejecución-de-tests)
+- [📂 Arquitectura del Proyecto](#-arquitectura-del-proyecto)
+- [✨ Mejoras de Robustez](#-mejoras-de-robustez)
+- [📊 Reportes](#-reportes)
 
+---
+
+## 🚀 Inicio Rápido
+
+### Requisitos Previos
+
+*   **Node.js** (v14+)
+*   **npm** (incluido con Node.js)
+
+### Instalación
+
+1.  **Clonar y Acceder:**
+    ```bash
+    git clone <repository-url>
+    cd challenge-frontend
+    ```
+
+2.  **Instalar Dependencias:**
     ```bash
     npm install
     ```
 
-3. Instala los navegadores necesarios para Playwright:
-
+3.  **Instalar Navegadores:**
     ```bash
-    npx playwright install
+    npx playwright install chromium
     ```
 
-## Estructura del Proyecto
+---
 
-- **`pages/`**: Contiene archivos de páginas (`homePage.js`, `productPage.js`, `resultsPage.js`) que representan diferentes secciones de la aplicación.
-- **`utils/`**: Contiene helpers para tareas comunes, como la función `verifyAndEnterPostalCode`.
-- **`tests/`**: Contiene los archivos de test (`CasoLibre.spec.js`) con los escenarios de prueba.
+## 🧪 Escenarios de Prueba
 
-## Tests
+| Escenario | Descripción | Flujo |
+| :--- | :--- | :--- |
+| **Caso 1: Heladera Drean** | Busca y añade una heladera específica al carrito. | Home ➔ CP ➔ Search ➔ Detalle ➔ Carrito |
+| **Caso Libre: Ofertas** | Valida filtros y ordenamiento en la sección de ofertas. | Home ➔ CP ➔ Ofertas ➔ Filtros ➔ Carrito |
 
-### 1. `CasoLibre`
+---
 
-Este test navega a la página principal, ingresa al menú "Ofertas", filtra por marca y ordena por precio, añade un producto al carrito y finaliza verificando dentro del carrito que el producto haya sido agregado
+## 🛠️ Ejecución de Tests
 
-**Pasos del test**:
+| Comando | Descripción |
+| :--- | :--- |
+| `npm run test` | Ejecuta todos los tests en **Producción**. |
+| `npm run test:prod` | Alias para ejecución rápida en producción. |
+| `npm run test:debug` | Activa el **Playwright Inspector** paso a paso. |
 
-1. Navega a la página principal.
-2. Ingresa el código postal en el modal de geolocalización.
-3. Accede al menú de Ofertas.
-4. Filtra por una marca específica y ordena por "Menor precio".
-5. Selecciona el segundo producto del listado de resultados.
-6. Verifica que el precio del producto sea visible.
-7. Agrega el producto al carrito.
-8. Ingresa al carrito y verifica que el botón "Finalizar Compra" esté disponible.
+---
 
-### 2. `Añade al carrito Heladera Samsung`
+## 📂 Arquitectura del Proyecto
 
-Este test busca un producto específico (Heladera Samsung) y lo añade al carrito.
+La estructura sigue las mejores prácticas de **Page Object Model (POM)**:
 
-**Pasos del test**:
+```text
+challenge-frontend/
+├── 📁 tests/
+│   ├── 📁 common/          # Configuración de entornos y variables globales.
+│   ├── 📁 web/
+│   │   ├── 📁 pages/       # POM: Selectores y lógica por página (homePage, productPage, etc.).
+│   │   ├── 📁 scenarios/   # Definiciones de los tests (.spec.js).
+│   │   └── 📁 utils/       # Helpers comunes y lógicas compartidas.
+├── 📄 playwright.config.js  # Configuración core de la suite.
+└── 📄 package.json          # Scripts y administración de dependencias.
+```
 
-1. Navega a la página principal.
-2. Ingresa el código postal en el modal de geolocalización.
-3. Busca el producto en el campo de búsqueda.
-4. Selecciona el segundo producto del listado de resultados.
-5. Verifica que el precio del producto sea visible.
-6. Agrega el producto al carrito.
-7. Ingresa al carrito y verifica que el producto esté añadido.
+---
 
-## Ejecución de los Tests
+## ✨ Mejoras de Robustez
 
-Para ejecutar ambos tests, utiliza el siguiente comando:
+La suite ha sido optimizada para manejar las peculiaridades del sitio de Fravega:
+
+*   **🔄 Manejo Dinámico de Modales:** Apertura proactiva del modal de geolocalización si no se encuentra visible.
+*   **🛡️ Dismiss de Overlays:** Cierre automático de overlays de confirmación de entrega que interceptan interacciones.
+*   **🎯 Selectores Únicos:** Uso de atributos específicos (`data-suggestion-index`, `name`) para evitar conflictos de *Strict Mode* en elementos duplicados para mobile/desktop.
+*   **⏱️ Sincronización Avanzada:** Uso de estados de carga inteligentes (`load` vs `networkidle`) para optimizar el tiempo de ejecución.
+
+---
+
+## 📊 Reportes
+
+Playwright genera un reporte visual detallado tras cada ejecución fallida o exitosa. Para verlo:
 
 ```bash
-npm run test_prod            
-````
+npx playwright show-report
+```
 
-Este test puede ejecutarse en 3 ambientes diferentes (qa, dev, prod) donde los 2 primeros poseen urls ficticias, al finalizar la ejecución de los tests, se abrirá automaticamente un reporte de la ejecución de los mismos
+---
 
-fravega-frontend
-├── tests
-│   ├── common
-│   │   └── config.js          # Configuración general (URLs, variables compartidas, etc.)
-│   ├── web
-│   │   ├── pages              # Páginas organizadas por componentes de UI o áreas funcionales
-│   │   │   ├── cartPage.js       # Página del carrito con selectores y métodos de interacción
-│   │   │   ├── homePage.js       # Página de inicio con selectores y métodos de interacción
-│   │   │   ├── productPage.js    # Página de producto con selectores y métodos de interacción
-│   │   │   └── resultsPage.js    # Página de resultados con selectores y métodos de interacción
-│   │   └── scenarios           # Escenarios de prueba completos, organizados por flujo o caso de uso
-│   │       └── testExample.spec.js  # Ejemplo de caso de prueba (p. ej., CasoLibre.spec.js)
-│   └── utils
-│       └── helpers.js          # Funciones auxiliares (e.g., ingreso de código postal, waits)
-└── README.md
+<p align="center">
+  <b>Hecho con 💚 para asegurar una experiencia de usuario sin fricciones.</b>
+</p>
+

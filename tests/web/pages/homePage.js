@@ -2,9 +2,9 @@
 export const home = {
     geoModal: '[data-test-id="geo-modal-wrapper"]',
     closeModalButton: '[data-test-id="close-modal-button"]',
-    searchField: '[placeholder="Buscar productos"]',
+    searchField: 'input[name="keyword"][data-suggestion-index="0"]',
     menuCategory: '[data-test-id="nav-bar"]',
     submenuCategories: '.sc-ikkxIA',
-    product: 'Heladera Samsung',
+    product: 'Heladera Drean',
     menuOfertas: 'span[data-test-id="n1-category"]:text("Ofertas")'
 };

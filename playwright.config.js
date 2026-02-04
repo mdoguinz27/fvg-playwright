@@ -7,7 +7,7 @@ const environment = process.env.ENV || 'PROD_URL';
  * @see https://playwright.dev/docs/test-configuration
  */
 export default defineConfig({
-  timeout:120000,
+  timeout: 120000,
   testDir: './tests',
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -19,11 +19,11 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [
-    ['html', { open: 'always' }]  // Esto genera el reporte y lo abre siempre
+    ['html', { open: 'never' }]  // Esto genera el reporte pero no lo abre automáticamente
   ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-   trace: 'on',
+    trace: 'on',
     baseURL: process.env[environment],
     video: 'on'
   },
@@ -32,7 +32,7 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'], headless:false },
+      use: { ...devices['Desktop Chrome'], headless: true },
     },
 
     // {
