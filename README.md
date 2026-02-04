@@ -34,7 +34,7 @@ Este repositorio alberga una robusta suite de pruebas automatizadas **End-to-End
 1.  **Clonar y Acceder:**
     ```bash
     git clone <repository-url>
-    cd challenge-frontend
+    cd fvg-playwright
     ```
 
 2.  **Instalar Dependencias:**
